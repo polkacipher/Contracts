@@ -13,7 +13,7 @@ salesWallet="0x7eAE698d28f57B1B8604bf2CF7a68F14da943e91"
 
 const sleep = ms => new Promise(res => setTimeout(res, ms));
 module.exports = async function(deployer) {
-	await deployer.deploy(Token,'x','x')
+	await deployer.deploy(Token,'Polka Cipher','PCHR')
     TokenInstance = await Token.deployed()
     
     

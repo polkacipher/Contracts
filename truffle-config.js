@@ -56,16 +56,7 @@
       port: 8545,            // Standard Ethereum port (default: none)
       network_id: "*",       // Any network (default: none)
      },
-     97: {
-       provider: () => new HDWalletProvider(mnemonic, "https://data-seed-prebsc-1-s1.binance.org:8545/"),
-       network_id: "97",
-       gasPrice: 10000000000,
-       confirmations: 0,
-       disableConfirmationListener:true,
-       deploymentPollingInterval:500,
-       skipDryRun: true,
-      //  from : "0x3381251d67ECF2DdE83Bc0eCB847BA15BEc7d327"
-     }
+    
      // Another network with more advanced options...
      // advanced: {
      // port: 8777,             // Custom port
