@@ -59,9 +59,16 @@ contract MultisigWallet is Context {
                 abi.encodePacked(domainSeparator, nonce, to, value, data)
             );
         uint8 approvals;
-        approvals += _voters[hash.recover(sig1)];
-        approvals += _voters[hash.recover(sig2)];
-        approvals += _voters[hash.recover(sig3)];
+        address voter1 = hash.recover(sig1);
+        address voter2 = hash.recover(sig2);
+        address voter3 = hash.recover(sig3);
+        require(
+            (voter1 != voter2 && voter2 != voter3),
+            "MultiSig: Invalid Voters"
+        );
+        approvals += _voters[voter1];
+        approvals += _voters[voter2];
+        approvals += _voters[voter3];
         if (approvals >= _required) {
             nonce++;
             (success, ) = to.call{value: value}(data);
