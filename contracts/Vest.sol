@@ -52,6 +52,7 @@ contract Vesting is Context {
                     .mul(timePassed)
                     .div(_vests[index].linear)
             )
+                .add(_vests[index].initial)
                 .sub(_vests[index].claimed);
         } else if (
             block.timestamp >
