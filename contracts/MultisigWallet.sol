@@ -3,8 +3,9 @@
 pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/utils/Context.sol";
 import "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-contract MultisigWallet is Context {
+contract MultisigWallet is Context, ReentrancyGuard {
     using ECDSA for bytes32;
 
     mapping(address => uint8) private _voters;
@@ -53,7 +54,7 @@ contract MultisigWallet is Context {
         bytes memory sig1,
         bytes memory sig2,
         bytes memory sig3
-    ) public payable returns (bool success) {
+    ) public payable nonReentrant returns (bool success) {
         bytes32 hash =
             keccak256(
                 abi.encodePacked(domainSeparator, nonce, to, value, data)

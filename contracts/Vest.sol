@@ -3,11 +3,13 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 contract Vesting is Context {
     using SafeMath for uint256;
+    using SafeERC20 for IERC20;
 
     IERC20 private _token;
 
@@ -69,7 +71,7 @@ contract Vesting is Context {
         uint256 tokenClaimable = getClaimable(owner, nonce);
         bytes32 index = getVestId(owner, nonce);
         _vests[index].claimed = _vests[index].claimed.add(tokenClaimable);
-        _token.transfer(owner, tokenClaimable);
+        _token.safeTransfer(owner, tokenClaimable);
     }
 
     function initiateVest(
@@ -92,7 +94,7 @@ contract Vesting is Context {
             initial < amount,
             "Vesting: initial amount should be less than total amount."
         );
-        _token.transferFrom(_msgSender(), address(this), amount);
+        _token.safeTransferFrom(_msgSender(), address(this), amount);
         bytes32 index = getVestId(owner, _nonce[owner]);
         _vests[index] = Vest(
             owner,
@@ -106,7 +108,7 @@ contract Vesting is Context {
         _vests[index].claimed = _vests[index].claimed.add(
             _vests[index].initial
         );
-        _token.transfer(_vests[index].owner, _vests[index].initial);
+        _token.safeTransfer(_vests[index].owner, _vests[index].initial);
         _nonce[owner]++;
         return index;
     }
